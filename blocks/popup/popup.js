@@ -4,17 +4,18 @@ let popupWindow = document.querySelector('.popup');
 let popupOpenButton = document.querySelector('.profile__edit-button');
 let popupCloseButton = document.querySelector('.popup__close-button');
 
-let popupFormInputs = document.querySelectorAll('.popup__input');
+let popupFormInputsName = document.querySelector('.input_name');
+let popupFormInputsProfessuon = document.querySelector('.input_profession');
 
-let profileNameText = document.querySelector('.profile__name');
-let profileProfessionText = document.querySelector('.profile__profession');
+let profileName = document.querySelector('.profile__name');
+let profileProfession = document.querySelector('.profile__profession');
 
 let popupForm = document.querySelector('.popup__form');
 
 function popupOpening() {
     popupWindow.classList.add('popup_opened');
-    popupFormInputs[0].value = profileNameText.textContent;
-    popupFormInputs[1].value = profileProfessionText.textContent;
+    popupFormInputsName.value = profileName.textContent;
+    popupFormInputsProfessuon.value = profileProfession.textContent;
 };
 
 function popupClosing() {
@@ -23,8 +24,8 @@ function popupClosing() {
 
 function handleFormSubmit(evt) {
     evt.preventDefault();
-    profileNameText.textContent = popupFormInputs[0].value;
-    profileProfessionText.textContent = popupFormInputs[1].value;
+    profileName.textContent = popupFormInputsName.value;
+    profileProfession.textContent = popupFormInputsProfessuon.value;
     popupClosing();
 }
 

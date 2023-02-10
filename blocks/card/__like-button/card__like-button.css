@@ -2,9 +2,9 @@
     padding: 0;
     width: 22px;
     height: 19px;
+    border: none;
     background-color: transparent;
-    border: 1px solid #ffffff;
-    background-image: url(../../../images/like.png);
+    background-image: url(../../../images/like.svg);
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center center;

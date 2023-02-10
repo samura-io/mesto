@@ -5,8 +5,8 @@
     align-self: center;
     justify-self: end;
     background-color: transparent;
-    border: 1px solid #ffffff;
-    background-image: url(../../../images/add.png);
+    border: 2px solid #ffffff;
+    background-image: url(../../../images/add.svg);
     background-size: 22px 22px;
     background-repeat: no-repeat;
     background-position: center center;
