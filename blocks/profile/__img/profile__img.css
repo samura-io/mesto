@@ -1,0 +1,8 @@
+.profile__img {
+    display: block;
+    max-width: 120px;
+    border-radius: 50%;
+    grid-area: img;
+    justify-self: start;
+    align-self: center;
+}
