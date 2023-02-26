@@ -48,8 +48,6 @@ const initialCards = [
 // Открыть попап
 function openPopup(popup) {
   popup.classList.add('popup_opened');
-  popupFormInputsName.value = profileName.textContent;
-  popupFormInputsProfessuon.value = profileProfession.textContent;
 };
 
 // Закрыть попап
@@ -79,6 +77,30 @@ function createCard(name, link) {
   cardElement.querySelector('.card__image').src = link; // добавляем ссылку на изображение
   cardElement.querySelector('.card__image').alt = name; // добавляем alt изображению
   cardElement.querySelector('.card__name').textContent = name; // добавляем текст карточке
+
+  // Лайкаем
+  const likeCard = cardElement.querySelector('.card__like-button');
+  console.log(likeCard);
+  likeCard.addEventListener('click', function(evt){ 
+    evt.target.classList.toggle('card__like-button_active');
+  });
+
+  // Удалаяем
+  const deleteButton = cardElement.querySelector('.card__trash');
+  deleteButton.addEventListener('click', function(){
+    cardElement.remove();
+  });
+
+  // Открываем изображение
+  const cardImage = cardElement.querySelector('.card__image');
+  cardImage.addEventListener('click', function(){
+    openPopup(popupImageConteiner);
+    popupImageConteiner.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
+    popupImage.src= link;
+    popupImage.alt= name;
+    popupCaption.textContent= name;
+  });
+  
   return cardElement;
 };
 
@@ -86,28 +108,6 @@ function createCard(name, link) {
 function addCard(cardName, cardLink){
   const cardElement = createCard(cardName, cardLink);
   sectionCard.prepend(cardElement);
-
-  // Лайкаем
-  const likeCard = document.querySelector('.card__like-button');
-  likeCard.addEventListener('click', function(evt){ 
-    evt.target.classList.toggle('card__like-button_active');
-  });
-
-  // Удалаяем
-  const deleteButton = document.querySelector('.card__trash');
-  deleteButton.addEventListener('click', function(){
-    cardElement.remove();
-  });
-
-  // Открываем изображение
-  const cardImage = document.querySelector('.card__image');
-  cardImage.addEventListener('click', function(){
-    popupImageConteiner.classList.add('popup_opened');
-    popupImageConteiner.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
-    popupImage.src= cardLink;
-    popupImage.alt= cardName;
-    popupCaption.textContent= cardName;
-  });
 }
 
 // Обновляем карточки из массива
@@ -117,8 +117,10 @@ for (i=0; i < initialCards.length; i++) {
 
 popupForm.addEventListener('submit', handleFormSubmit);  // Слушатель отправки формы редактирования профиля
 popupFormAdd.addEventListener('submit', submitCardForm); // Слушатель открытия попапа добавления карточек
-popupOpenButton.addEventListener('click', () => openPopup(popupEditProfile)); // Слушатель открытия попапа редактирования профиля
 popupAddCardOpenButton.addEventListener('click', () => openPopup(popupAddCard)); // Слушатель открытия попапа добавления карточек
+popupOpenButton.addEventListener('click', () => {openPopup(popupEditProfile);
+  popupFormInputsName.value = profileName.textContent;
+  popupFormInputsProfessuon.value = profileProfession.textContent;}); // Слушатель открытия попапа редактирования профиля
 
 // Закрытие любых попапов
 closeButton.forEach((button)=>{
