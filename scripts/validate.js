@@ -73,7 +73,7 @@ options = {
 
 
 // Запускать валидацию при каждом открытии формы
-const openButtonList = document.querySelectorAll('.profile_button')
+const openButtonList = document.querySelectorAll('.profile__button')
 openButtonList.forEach(function(elem){
     elem.addEventListener('click', function(){
         enableValidation(options)
