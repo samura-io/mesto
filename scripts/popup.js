@@ -17,6 +17,8 @@ const popupImage = document.querySelector('.popup__image'); // Изображе�
 const popupCaption = document.querySelector('.popup__caption'); // Подпись в попапе
 const closeButton = document.querySelectorAll('.popup__close-button'); // Все кремтики закрыть
 
+
+
 // Массив с изображениями для карточек
 const initialCards = [
   {
@@ -63,6 +65,7 @@ function handleFormSubmit(evt) {
   closePopup(popupEditProfile);
 };
 
+
 // Отправить форму данных карточки
 function submitCardForm(evt) {
   evt.preventDefault();
@@ -80,7 +83,6 @@ function createCard(name, link) {
 
   // Лайкаем
   const likeCard = cardElement.querySelector('.card__like-button');
-  console.log(likeCard);
   likeCard.addEventListener('click', function(evt){ 
     evt.target.classList.toggle('card__like-button_active');
   });
@@ -125,5 +127,16 @@ popupOpenButton.addEventListener('click', () => {openPopup(popupEditProfile);
 // Закрытие любых попапов
 closeButton.forEach((button)=>{
   const popup = button.closest('.popup');
+  // Закрытие кликом на крестик
   button.addEventListener('click', () => closePopup(popup));
+  // Закрытие кнопкой ESC
+  document.addEventListener('keydown', (evt) => {
+    if (evt.key === 'Escape'){closePopup(popup)}
+  });
+  // Закрытие кликом на оверлей
+  popup.addEventListener("mousedown", (evt) => {
+    if (evt.currentTarget === evt.target) {
+      closePopup(popup)
+    }
+  })
 });
