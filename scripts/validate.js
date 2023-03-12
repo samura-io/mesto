@@ -1,32 +1,34 @@
+import { validationConfig } from "./constants.js";
+
 // Включение валидации
-function enableValidation(options) {
-    const formList = Array.from(document.querySelectorAll(options.formSelector));
+function enableValidation(validationConfig) {
+    const formList = Array.from(document.querySelectorAll(validationConfig.formSelector));
     formList.forEach(() => {
         formList.forEach((fieldSet) => {
-        setEventListeners(fieldSet, options);
+        setEventListeners(fieldSet, validationConfig);
         });
     });
 }
 
 // Установить слушателей
 function setEventListeners(formElement) {
-    const inputList = Array.from(formElement.querySelectorAll(options.inputSelector));
-    const buttonElement = formElement.querySelector(options.submitButtonSelector);
-    toggleButtonState(inputList, buttonElement, options);
+    const inputList = Array.from(formElement.querySelectorAll(validationConfig.inputSelector));
+    const buttonElement = formElement.querySelector(validationConfig.submitButtonSelector);
+    toggleButtonState(inputList, buttonElement, validationConfig);
     inputList.forEach((inputElement) => {
         inputElement.addEventListener('input', function () {
-        checkInputValidity(formElement, inputElement, options);
-        toggleButtonState(inputList, buttonElement, options);
+        checkInputValidity(formElement, inputElement, validationConfig);
+        toggleButtonState(inputList, buttonElement, validationConfig);
         });
     });
 };
 
 // Активировать кнопку 
-function toggleButtonState(inputList, buttonElement, options) {
+function toggleButtonState(inputList, buttonElement, validationConfig) {
     if (hasInvalidInput(inputList)) {
-    buttonElement.classList.add(options.inactiveButtonClass);
+    buttonElement.classList.add(validationConfig.inactiveButtonClass);
     } else {
-    buttonElement.classList.remove(options.inactiveButtonClass);
+    buttonElement.classList.remove(validationConfig.inactiveButtonClass);
     } 
 }
 
@@ -38,44 +40,34 @@ function hasInvalidInput (inputList) {
 }
  
 // Принять решение валидации
-function checkInputValidity(formElement, inputElement, options) {
+function checkInputValidity(formElement, inputElement, validationConfig) {
     if (!inputElement.validity.valid) {
-        showInputError(formElement, inputElement, inputElement.validationMessage, options);
+        showInputError(formElement, inputElement, inputElement.validationMessage, validationConfig);
     } else {
-        hideInputError(formElement, inputElement, options);
+        hideInputError(formElement, inputElement, validationConfig);
     }
 };
 
 // Активировать ошибки валидации
-function showInputError(formElement, inputElement, errorMessage, options) {
+function showInputError(formElement, inputElement, errorMessage, validationConfig) {
     const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
-    inputElement.classList.add(options.inputErrorClass);
+    inputElement.classList.add(validationConfig.inputErrorClass);
     errorElement.textContent = errorMessage;
-    errorElement.classList.add(options.errorClass);
+    errorElement.classList.add(validationConfig.errorClass);
 };
 
 // Дезактивировать ошибки валидации
-function hideInputError(formElement, inputElement, options) {
+function hideInputError(formElement, inputElement, validationConfig) {
     const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
-    inputElement.classList.remove(options.inputErrorClass);
-    errorElement.classList.remove(options.errorClass);
+    inputElement.classList.remove(validationConfig.inputErrorClass);
+    errorElement.classList.remove(validationConfig.errorClass);
     errorElement.textContent = '';
 };
-
-options = {
-    formSelector: '.popup__form',
-    inputSelector: '.popup__input',
-    submitButtonSelector: '.popup__save-button',
-    inactiveButtonClass: 'popup__save-button_inactive',
-    inputErrorClass: 'popup__input_type_error',
-    errorClass: 'popup__input-error_active'
-  }
-
 
 // Запускать валидацию при каждом открытии формы
 const openButtonList = document.querySelectorAll('.profile__button')
 openButtonList.forEach(function(elem){
     elem.addEventListener('click', function(){
-        enableValidation(options)
+        enableValidation(validationConfig)
     })
 })

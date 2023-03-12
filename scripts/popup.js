@@ -1,3 +1,5 @@
+import { initialCards } from "./constants.js";
+
 const popupEditProfile = document.querySelector('.popup_content_profile'); // Окно попапа профиля
 const popupOpenButton = document.querySelector('.profile__edit-button'); // Кнопка открытия попапа профиля
 const popupFormInputsName = document.querySelector('.popup__input_value_name'); // Поле с именем профиля
@@ -15,50 +17,33 @@ const popupFormAdd = document.querySelector('.popup__form_type_card');  // Фо�
 const popupImageConteiner = document.querySelector('.popup_content_image'); // Окно попапа просмотра изображения
 const popupImage = document.querySelector('.popup__image'); // Изображение в попапе
 const popupCaption = document.querySelector('.popup__caption'); // Подпись в попапе
-const closeButton = document.querySelectorAll('.popup__close-button'); // Все кремтики закрыть
+const closeButton = document.querySelectorAll('.popup__close-button'); // Все креcтики закрыть
+const popups = document.querySelectorAll('.popup'); // Все попапы
+const escapeKey = 'Escape';
 
-
-
-// Массив с изображениями для карточек
-const initialCards = [
-  {
-    name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-  },
-  {
-    name: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-  },
-  {
-    name: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-  },
-  {
-    name: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-  },
-  {
-    name: 'Холмогорский район',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-  },
-  {
-    name: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-  }
-];
+// Закрыть попапы с помощью ESC
+function closePopupsByEsc(evt) {
+  popups.forEach((popup)=>{
+    if (evt.key === escapeKey){closePopup(popup)}
+  })
+}
 
 // Открыть попап
 function openPopup(popup) {
   popup.classList.add('popup_opened');
+  // Добавить обработчик закрытия по ESC
+  document.addEventListener('keydown', closePopupsByEsc);
 };
 
 // Закрыть попап
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
+  // Удалить обработчик закрытия по ESC
+  document.removeEventListener('keydown', closePopupsByEsc);
 };
 
 // Отправить форму данных профиля
-function handleFormSubmit(evt) {
+function submitEditForm(evt) {
   evt.preventDefault();
   profileName.textContent = popupFormInputsName.value;
   profileProfession.textContent = popupFormInputsProfessuon.value;
@@ -97,10 +82,10 @@ function createCard(name, link) {
   const cardImage = cardElement.querySelector('.card__image');
   cardImage.addEventListener('click', function(){
     openPopup(popupImageConteiner);
-    popupImageConteiner.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
-    popupImage.src= link;
-    popupImage.alt= name;
-    popupCaption.textContent= name;
+    popupImageConteiner.classList.add('popup_zoom_active');
+    popupImage.src = link;
+    popupImage.alt = name;
+    popupCaption.textContent = name;
   });
   
   return cardElement;
@@ -113,11 +98,11 @@ function addCard(cardName, cardLink){
 }
 
 // Обновляем карточки из массива
-for (i=0; i < initialCards.length; i++) {
+for (let i = 0; i < initialCards.length; i++) {
   addCard(initialCards[i].name,initialCards[i].link);
 };
 
-popupForm.addEventListener('submit', handleFormSubmit);  // Слушатель отправки формы редактирования профиля
+popupForm.addEventListener('submit', submitEditForm);  // Слушатель отправки формы редактирования профиля
 popupFormAdd.addEventListener('submit', submitCardForm); // Слушатель открытия попапа добавления карточек
 popupAddCardOpenButton.addEventListener('click', () => openPopup(popupAddCard)); // Слушатель открытия попапа добавления карточек
 popupOpenButton.addEventListener('click', () => {openPopup(popupEditProfile);
@@ -129,10 +114,6 @@ closeButton.forEach((button)=>{
   const popup = button.closest('.popup');
   // Закрытие кликом на крестик
   button.addEventListener('click', () => closePopup(popup));
-  // Закрытие кнопкой ESC
-  document.addEventListener('keydown', (evt) => {
-    if (evt.key === 'Escape'){closePopup(popup)}
-  });
   // Закрытие кликом на оверлей
   popup.addEventListener("mousedown", (evt) => {
     if (evt.currentTarget === evt.target) {
