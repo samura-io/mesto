@@ -18,28 +18,26 @@ const popupImageConteiner = document.querySelector('.popup_content_image'); // �
 const popupImage = document.querySelector('.popup__image'); // Изображение в попапе
 const popupCaption = document.querySelector('.popup__caption'); // Подпись в попапе
 const closeButton = document.querySelectorAll('.popup__close-button'); // Все креcтики закрыть
-const popups = document.querySelectorAll('.popup'); // Все попапы
 const escapeKey = 'Escape';
 
 // Закрыть попапы с помощью ESC
-function closePopupsByEsc(evt) {
-  popups.forEach((popup)=>{
-    if (evt.key === escapeKey){closePopup(popup)}
-  })
+function closePopupByEsc(evt) {
+  const openPopupSelector = document.querySelector('.popup_opened'); // открытый попап
+  if (evt.key === escapeKey){closePopup(openPopupSelector)} 
 }
 
 // Открыть попап
 function openPopup(popup) {
   popup.classList.add('popup_opened');
   // Добавить обработчик закрытия по ESC
-  document.addEventListener('keydown', closePopupsByEsc);
+  document.addEventListener('keydown', closePopupByEsc);
 };
 
 // Закрыть попап
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
   // Удалить обработчик закрытия по ESC
-  document.removeEventListener('keydown', closePopupsByEsc);
+  document.removeEventListener('keydown', closePopupByEsc);
 };
 
 // Отправить форму данных профиля
