@@ -20,7 +20,7 @@ const popupImage = document.querySelector('.popup__image'); // Изображе�
 const popupCaption = document.querySelector('.popup__caption'); // Подпись в попапе
 const closeButton = document.querySelectorAll('.popup__close-button'); // Все креcтики закрыть
 const escapeKey = 'Escape';
-const CardTemplate = '#card-template';
+const cardTemplate = '#card-template';
 
 // Конфигурация валидации
 const validationConfig = {
@@ -92,29 +92,36 @@ function submitEditForm(evt) {
 function submitCardForm(evt) {
   evt.preventDefault();
   const data = {name: popupFormInputsPlace.value, link: popupFormInputsLink.value};
-  addCard(data, CardTemplate);
+  addCard(data, cardTemplate);
   closePopup(popupAddCard);
   evt.target.reset();
 };
 
-// Добавить карточку
+// создаем карточку
+function createCard(data, templateSelector) {
+  const card = new Card(data, templateSelector);
+  return card
+}
+
+// Добавить карточку в секцию
 function addCard(data, templateSelector){
-  const card = new Card(data, templateSelector)
-  const cardElement = card.generateCard()
+  const cardElement = createCard(data, templateSelector).generateCard()
   sectionCard.prepend(cardElement);
 }
 
 // Обновляем карточки из массива
 initialCards.forEach(function(item) {
-  addCard(item, CardTemplate)
+  addCard(item, cardTemplate)
 })
 
 popupForm.addEventListener('submit', submitEditForm);  // Слушатель отправки формы редактирования профиля
 popupFormAdd.addEventListener('submit', submitCardForm); // Слушатель открытия попапа добавления карточек
-popupAddCardOpenButton.addEventListener('click', () => openPopup(popupAddCard)); // Слушатель открытия попапа добавления карточек
+popupAddCardOpenButton.addEventListener('click', () => {openPopup(popupAddCard);
+  cardForm.resetValidation()}); // Слушатель открытия попапа добавления карточек
 popupOpenButton.addEventListener('click', () => {openPopup(popupEditProfile);
   popupFormInputsName.value = profileName.textContent;
-  popupFormInputsProfessuon.value = profileProfession.textContent;}); // Слушатель открытия попапа редактирования профиля
+  popupFormInputsProfessuon.value = profileProfession.textContent;
+  profileForm.resetValidation()}); // Слушатель открытия попапа редактирования профиля
 
 // Закрытие любых попапов
 closeButton.forEach((button)=>{
@@ -129,13 +136,7 @@ closeButton.forEach((button)=>{
   })
 });
 
-// Включаем валидацию
-const openButtonList = document.querySelectorAll('.profile__button')
-openButtonList.forEach(function(elem){
-    elem.addEventListener('click', function(){
-        const profileForm = new FormValidator(validationConfig, popupEditProfile);
-        profileForm.enableValidation()
-        const cardForm = new FormValidator(validationConfig, popupAddCard);
-        cardForm.enableValidation()
-    })
-})
+const profileForm = new FormValidator(validationConfig, popupEditProfile);
+profileForm.enableValidation()
+const cardForm = new FormValidator(validationConfig, popupAddCard);
+cardForm.enableValidation()

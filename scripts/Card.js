@@ -16,8 +16,8 @@ export class Card {
         
     }
 
-    _likeCard() {
-      this.classList.toggle('card__like-button_active');
+    _likeCard = () => {
+      this.likeCard.classList.toggle('card__like-button_active');
     }
 
     _deleteCard = () => {

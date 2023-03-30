@@ -11,6 +11,11 @@ export class FormValidator {
         this._setEventListeners();
     }
 
+    resetValidation() {
+        this.inputList.forEach((item) => {this._hideInputError(item);})
+        this._toggleButtonState();
+    }
+
     // Установить слушателей
     _setEventListeners() {
         this._toggleButtonState();
@@ -26,8 +31,10 @@ export class FormValidator {
     _toggleButtonState() {
         if (this._hasInvalidInput()) {
             this.buttonElement.classList.add(this._validationConfig.inactiveButtonClass);
+            this.buttonElement.setAttribute('disabled', '');
         } else {
             this.buttonElement.classList.remove(this._validationConfig.inactiveButtonClass);
+            this.buttonElement.removeAttribute('disabled');
         } 
     }
 
