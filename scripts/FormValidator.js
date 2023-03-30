@@ -11,6 +11,7 @@ export class FormValidator {
         this._setEventListeners();
     }
 
+    // Сбросить валидацию
     resetValidation() {
         this.inputList.forEach((item) => {this._hideInputError(item);})
         this._toggleButtonState();
