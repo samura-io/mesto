@@ -1,18 +1,17 @@
 <!DOCTYPE html>
 <html lang="ru">
   <head>
-    <link rel="stylesheet" href="pages/index.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mesto</title>
   </head>
   <body class="page">
     <header class="header">
-        <img class="header__logo" alt="Логотип сайта" src="./images/logo.svg">
+        <img class="header__logo" alt="Логотип сайта" src="<%=require('./images/logo.svg')%>">
     </header>
     <main class="main">
         <section class="profile">
-            <img class="profile__img" src="./images/profile-img.jpg" alt="Изображение профиля">
+            <img class="profile__img" src="<%=require('./images/profile-img.jpg')%>" alt="Изображение профиля">
             <div class="profile__container">
               <h1 class="profile__name">Жак-Ив Кусто</h1>
               <button class="profile__button profile__edit-button" type="button" aria-label="Редактировать"></button>
@@ -34,12 +33,12 @@
         <form class="popup__form popup__form_type_profile" name="edit" novalidate>
           
           <input class="popup__input popup__input_value_name" type="text" required value="" 
-          placeholder="Имя" name="name" id="name-input" minlength="2" maxlength="40">
-          <span class="popup__input-error name-input-error"></span>
+          placeholder="Имя" name="name" id="name" minlength="2" maxlength="40">
+          <span class="popup__input-error name-error"></span>
           
           <input class="popup__input popup__input_value_profession" type="text" required value="" 
-          placeholder="О себе" name="profession" id="profession-input"  minlength="2" maxlength="200">
-          <span class="popup__input-error profession-input-error"></span>
+          placeholder="О себе" name="profession" id="profession"  minlength="2" maxlength="200">
+          <span class="popup__input-error profession-error"></span>
           
           <button type="submit" class="popup__save-button" aria-label="Сохранить">Сохранить</button>
         
@@ -54,11 +53,11 @@
         <form class="popup__form popup__form_type_card" name="card" novalidate>
          
           <input class="popup__input popup__input_value_place" type="text" value=""
-           placeholder="Название" name="place" minlength="2" maxlength="30" id="place-input" required>
-          <span class="popup__input-error place-input-error"></span>
+           placeholder="Название" name="place" minlength="2" maxlength="30" id="place" required>
+          <span class="popup__input-error place-error"></span>
           
-          <input class="popup__input popup__input_value_link" type="url" value="" placeholder="Ссылка на картинку" name="link" id="link-input" required>
-          <span class="popup__input-error link-input-error"></span>
+          <input class="popup__input popup__input_value_link" type="url" value="" placeholder="Ссылка на картинку" name="link" id="link" required>
+          <span class="popup__input-error link-error"></span>
           
           <button type="submit" class="popup__save-button" aria-label="Создать">Создать</button>
         
@@ -84,6 +83,5 @@
         </div>
       </article>
     </template>
-    <script src="./scripts/index.js" type="module"></script>
   </body>
 </html>

@@ -1,21 +1,21 @@
-export class FormValidator {
+export default class FormValidator {
     constructor(validationConfig, formForValidation) {
         this._validationConfig = validationConfig;
         this._formForValidation = formForValidation;
         this.inputList = Array.from(this._formForValidation.querySelectorAll(this._validationConfig.inputSelector));
         this.buttonElement = this._formForValidation.querySelector(this._validationConfig.submitButtonSelector);
-    }
+    };
 
     // Включение валидации
     enableValidation() {
         this._setEventListeners();
-    }
+    };
 
     // Сбросить валидацию
     resetValidation() {
-        this.inputList.forEach((item) => {this._hideInputError(item);})
+        this.inputList.forEach((item) => {this._hideInputError(item)});
         this._toggleButtonState();
-    }
+    };
 
     // Установить слушателей
     _setEventListeners() {
@@ -37,14 +37,14 @@ export class FormValidator {
             this.buttonElement.classList.remove(this._validationConfig.inactiveButtonClass);
             this.buttonElement.removeAttribute('disabled');
         } 
-    }
+    };
 
     // Вернуть решение валидности формы
     _hasInvalidInput () {
         return this.inputList.some((inputElement) => {
             return !inputElement.validity.valid;
         }); 
-    }
+    };
     
     // Принять решение валидации
     _checkInputValidity(inputElement) {
