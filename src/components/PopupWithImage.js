@@ -8,7 +8,6 @@ export default class PopupWithImage extends Popup {
     };
 
     open(link, name){
-        this._popupElement.classList.add('popup_zoom_active');
         this._popupImage.src = link;
         this._popupImage.alt = name;
         this._popupCaption.textContent = name;
