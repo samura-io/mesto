@@ -3,6 +3,7 @@ export default class Popup {
         this._popupSelector = popupSelector;
         this._popupElement = document.querySelector(this._popupSelector);
         this._closeButton = this._popupElement.querySelector('.popup__close-button');
+        this._saveButton = this._popupElement.querySelector('.popup__save-button');
     };
 
     open(){
@@ -31,5 +32,11 @@ export default class Popup {
                 this.close();
             };
         });  
+    };
+
+    renderLoading(isLoading){
+        isLoading?
+        this._saveButton.textContent = 'Сохранение...':
+        this._saveButton.textContent= 'Сохранить';
     };
 }

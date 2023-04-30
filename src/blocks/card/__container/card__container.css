@@ -1,5 +1,8 @@
 .card__container {
-    display: flex;
+    display: grid;
+    grid-template-areas: 
+    "place like-bottom"
+    "place like-counter";
     align-items: center;
     justify-content: space-between;
     max-width: 246px;
