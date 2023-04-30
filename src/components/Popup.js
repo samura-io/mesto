@@ -35,8 +35,12 @@ export default class Popup {
     };
 
     renderLoading(isLoading){
-        isLoading?
-        this._saveButton.textContent = 'Сохранение...':
-        this._saveButton.textContent= 'Сохранить';
+        if(isLoading){
+            this._saveButton.textContent = 'Сохранение...';
+            this._saveButton.disabled = true;
+        } else {
+            this._saveButton.textContent= 'Сохранить';
+            this._saveButton.disabled = false;
+        }
     };
 }

@@ -36,28 +36,33 @@ const api = new Api({
 }); 
 
 // Получаем информацию о пользователе и объект карточек с сервера
-api.getUserInfo().then((data)=>{
+Promise.all([
+  api.getUserInfo(),
+  api.getInitialCards(),
+])
+.then(([data, card])=>{
   userInfo.setUserInfo(data);
   userInfo.setAvatar(data);
   userId = data._id;
-  })
-  .then(()=>{
-    api.getInitialCards().then((card)=>{
-      section.renderItems(card.reverse());
-    })
-    .catch((err)=>{
-      console.log(err)
-    })
-  })
-  .catch((err)=>{
-    console.log(err)
-  });
+  section.renderItems(card);
+})
+.catch((err)=>{
+  console.log(err)
+})
 
 // Удаление карточки
 const popupDeleteCard = new PopupConfirm({submitFunction: (card)=>{
-  api.deleteCard(card._cardId);
-  card.deleteCard();
-  popupDeleteCard.close();
+  popupDeleteCard.renderLoading(true);
+  api.deleteCard(card._cardId).then(()=>{
+    popupDeleteCard.close();
+    card.deleteCard();
+  })
+  .catch((err)=>{
+    console.log(err)
+  })
+  .finally(()=>{
+    popupDeleteCard.renderLoading(false);
+  })
 }},'.popup_delete-card');
 popupDeleteCard.setEventListeners();
 
@@ -103,11 +108,11 @@ const popupWithFormsAvatar = new PopupWithForms({submitFunction: (data)=>{
   popupWithFormsAvatar.renderLoading(true);
   api.avatarEdit(data.avatar).then((res)=>{
     userInfo.setAvatar(res)
+    popupWithFormsAvatar.close();
   }).catch((err)=>{
     console.log(err)
   })
   .finally(()=>{
-    popupWithFormsAvatar.close();
     popupWithFormsAvatar.renderLoading(false);
   });
   }}, '.popup_avatar');
@@ -118,16 +123,22 @@ const popupWithFormsProfile = new PopupWithForms({submitFunction: (data)=>{
   popupWithFormsProfile.renderLoading(true);
   api.editUserInfo(data.username, data.profession).then((res)=>{
     userInfo.setUserInfo({name: res.name, about: res.about});
+    popupWithFormsProfile.close();
   })
   .catch((err)=>{
     console.log(err)
   })
   .finally(()=>{
     popupWithFormsProfile.renderLoading(false);
-    popupWithFormsProfile.close();
   })
 }}, '.popup_content_profile');
 popupWithFormsProfile.setEventListeners();
+
+// Инициализация класса Section
+const section = new Section({renderer: (item)=>{ 
+  const cardElement = addCard(item);
+  section.addItems(cardElement);
+}}, '.cards');
 
 // Загрузка информации о карточках
 const popupWithFormsCard = new PopupWithForms({submitFunction: (data)=>{
@@ -135,22 +146,16 @@ const popupWithFormsCard = new PopupWithForms({submitFunction: (data)=>{
   api.addCard(data).then((res)=>{
   const cardElement = addCard(res);
   section.addItem(cardElement);
+  popupWithFormsCard.close();
   })
   .catch((err)=>{
     console.log(err)
   })
   .finally(()=>{
     popupWithFormsCard.renderLoading(false);
-    popupWithFormsCard.close();
   })
 }}, '.popup_content_card');
 popupWithFormsCard.setEventListeners();
-
-// Инициализация класса Section
-const section = new Section({renderer: (item)=>{ 
-  const cardElement = addCard(item);
-  section.addItem(cardElement);
-}}, '.cards');
 
 // Слушатель открытия попапа изменения информации пользователя
 popupOpenButton.addEventListener('click', () => {popupWithFormsProfile.open();
